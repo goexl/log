@@ -1,3 +1,7 @@
-module github.com/goexl/wanip
+module github.com/goexl/log
 
-go 1.19
+go 1.21
+
+require (
+	github.com/goexl/gox v0.3.7
+)
