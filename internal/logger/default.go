@@ -17,12 +17,14 @@ import (
 var _ core.Logger = (*Default)(nil)
 
 type Default struct {
-	params *param.Logger
+	params   *param.Logger
+	executor core.Executor
 }
 
-func NewDefault(params *param.Logger) *Default {
+func NewDefault(params *param.Logger, executor core.Executor) *Default {
 	return &Default{
-		params: params,
+		params:   params,
+		executor: executor,
 	}
 }
 
@@ -41,28 +43,28 @@ func (d *Default) Enabled(lvl core.Level) bool {
 func (d *Default) Debug(msg string, fields ...gox.Field[any]) {
 	if d.params.Level.Rank() <= core.LevelDebug.Rank() {
 		d.addCaller(&fields)
-		d.params.Executor.Debug(msg, fields...)
+		d.executor.Debug(msg, fields...)
 	}
 }
 
 func (d *Default) Info(msg string, fields ...gox.Field[any]) {
 	if d.params.Level.Rank() <= log.LevelInfo.Rank() {
 		d.addCaller(&fields)
-		d.params.Executor.Info(msg, fields...)
+		d.executor.Info(msg, fields...)
 	}
 }
 
 func (d *Default) Warn(msg string, fields ...gox.Field[any]) {
 	if d.params.Level.Rank() <= log.LevelWarn.Rank() {
 		d.addCaller(&fields)
-		d.params.Executor.Warn(msg, fields...)
+		d.executor.Warn(msg, fields...)
 	}
 }
 
 func (d *Default) Error(msg string, fields ...gox.Field[any]) {
 	if d.params.Level.Rank() <= log.LevelError.Rank() {
 		d.addCaller(&fields)
-		d.params.Executor.Error(msg, fields...)
+		d.executor.Error(msg, fields...)
 	}
 }
 
@@ -73,7 +75,7 @@ func (d *Default) Panic(msg string, fields ...gox.Field[any]) {
 
 	d.addCaller(&fields)
 	d.addStacks(&fields)
-	d.params.Executor.Panic(msg, fields...)
+	d.executor.Panic(msg, fields...)
 }
 
 func (d *Default) Fatal(msg string, fields ...gox.Field[any]) {
@@ -83,11 +85,11 @@ func (d *Default) Fatal(msg string, fields ...gox.Field[any]) {
 
 	d.addCaller(&fields)
 	d.addStacks(&fields)
-	d.params.Executor.Fatal(msg, fields...)
+	d.executor.Fatal(msg, fields...)
 }
 
 func (d *Default) Sync() error {
-	return d.params.Executor.Sync()
+	return d.executor.Sync()
 }
 
 func (d *Default) addCaller(fields *[]gox.Field[any]) {

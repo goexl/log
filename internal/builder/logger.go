@@ -57,13 +57,29 @@ func (l *Logger) Stacktrace(stacktrace int) (logger *Logger) {
 	return l
 }
 
-func (l *Logger) Executor(executor core.Executor) (logger *Logger) {
-	l.params.Executor = executor
+func (l *Logger) Factory(factory core.Factory) (logger *Logger) {
+	l.params.Factory = factory
 	logger = l
 
 	return l
 }
 
-func (l *Logger) Build() core.Logger {
-	return logger.NewDefault(l.params)
+func (l *Logger) Build() (log core.Logger, err error) {
+	if executor, ne := l.params.Factory.New(); nil != ne {
+		err = ne
+	} else {
+		log = logger.NewDefault(l.params, executor)
+	}
+
+	return
+}
+
+func (l *Logger) Apply() (logger core.Logger) {
+	if created, be := l.Build(); nil != be {
+		panic(be)
+	} else {
+		logger = created
+	}
+
+	return
 }
