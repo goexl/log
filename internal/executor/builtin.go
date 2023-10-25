@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/goexl/gox"
-	"github.com/goexl/simaqian/internal/core"
+	"github.com/goexl/log/internal/core"
 )
 
 var _ core.Executor = (*Builtin)(nil)

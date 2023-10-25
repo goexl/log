@@ -9,9 +9,8 @@ import (
 
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
-	"github.com/goexl/log"
-	"github.com/goexl/simaqian/internal/core"
-	"github.com/goexl/simaqian/internal/param"
+	"github.com/goexl/log/internal/core"
+	"github.com/goexl/log/internal/param"
 )
 
 var _ core.Logger = (*Default)(nil)
@@ -48,28 +47,28 @@ func (d *Default) Debug(msg string, fields ...gox.Field[any]) {
 }
 
 func (d *Default) Info(msg string, fields ...gox.Field[any]) {
-	if d.params.Level.Rank() <= log.LevelInfo.Rank() {
+	if d.params.Level.Rank() <= core.LevelInfo.Rank() {
 		d.addCaller(&fields)
 		d.executor.Info(msg, fields...)
 	}
 }
 
 func (d *Default) Warn(msg string, fields ...gox.Field[any]) {
-	if d.params.Level.Rank() <= log.LevelWarn.Rank() {
+	if d.params.Level.Rank() <= core.LevelWarn.Rank() {
 		d.addCaller(&fields)
 		d.executor.Warn(msg, fields...)
 	}
 }
 
 func (d *Default) Error(msg string, fields ...gox.Field[any]) {
-	if d.params.Level.Rank() <= log.LevelError.Rank() {
+	if d.params.Level.Rank() <= core.LevelError.Rank() {
 		d.addCaller(&fields)
 		d.executor.Error(msg, fields...)
 	}
 }
 
 func (d *Default) Panic(msg string, fields ...gox.Field[any]) {
-	if d.params.Level.Rank() > log.LevelPanic.Rank() {
+	if d.params.Level.Rank() > core.LevelPanic.Rank() {
 		return
 	}
 
@@ -79,7 +78,7 @@ func (d *Default) Panic(msg string, fields ...gox.Field[any]) {
 }
 
 func (d *Default) Fatal(msg string, fields ...gox.Field[any]) {
-	if d.params.Level.Rank() > log.LevelFatal.Rank() {
+	if d.params.Level.Rank() > core.LevelFatal.Rank() {
 		return
 	}
 

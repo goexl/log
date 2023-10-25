@@ -1,8 +1,8 @@
 package log
 
 import (
-	"github.com/goexl/simaqian/internal/builder"
-	"github.com/goexl/simaqian/internal/core"
+	"github.com/goexl/log/internal/builder"
+	"github.com/goexl/log/internal/core"
 )
 
 // New 创建

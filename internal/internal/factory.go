@@ -1,8 +1,8 @@
 package internal
 
 import (
-	"github.com/goexl/simaqian/internal/core"
-	"github.com/goexl/simaqian/internal/executor"
+	"github.com/goexl/log/internal/core"
+	"github.com/goexl/log/internal/executor"
 )
 
 type Factory struct{}

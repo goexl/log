@@ -1,7 +1,7 @@
 package log
 
 import (
-	"github.com/goexl/simaqian/internal/core"
+	"github.com/goexl/log/internal/core"
 )
 
 const (

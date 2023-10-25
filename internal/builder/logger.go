@@ -1,9 +1,9 @@
 package builder
 
 import (
-	"github.com/goexl/simaqian/internal/core"
-	"github.com/goexl/simaqian/internal/logger"
-	"github.com/goexl/simaqian/internal/param"
+	"github.com/goexl/log/internal/core"
+	"github.com/goexl/log/internal/logger"
+	"github.com/goexl/log/internal/param"
 )
 
 type Logger struct {
