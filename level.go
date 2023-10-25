@@ -1,52 +1,22 @@
 package log
 
+import (
+	"github.com/goexl/simaqian/internal/core"
+)
+
 const (
-	LevelDebug Level = "debug"
-	LevelInfo  Level = "info"
-	LevelWarn  Level = "warn"
-	LevelError Level = "error"
-	LevelPanic Level = "panic"
-	LevelFatal Level = "fatal"
+	LevelDebug = core.LevelDebug
+	LevelInfo  = core.LevelInfo
+	LevelWarn  = core.LevelWarn
+	LevelError = core.LevelError
+	LevelPanic = core.LevelPanic
+	LevelFatal = core.LevelFatal
 )
 
 // Level 日志级别
-type Level string
+type Level = core.Level
 
 // ParseLevel 解析日志级别
-func ParseLevel(from string) (level Level) {
-	switch Level(from) {
-	case LevelDebug:
-		level = LevelDebug
-	case LevelInfo:
-		level = LevelInfo
-	case LevelWarn:
-		level = LevelWarn
-	case LevelError:
-		level = LevelError
-	case LevelPanic:
-		level = LevelPanic
-	case LevelFatal:
-		level = LevelFatal
-	}
-
-	return
-}
-
-func (l Level) Rank() (rank int) {
-	switch l {
-	case LevelDebug:
-		rank = 10
-	case LevelInfo:
-		rank = 20
-	case LevelWarn:
-		rank = 30
-	case LevelError:
-		rank = 40
-	case LevelPanic:
-		rank = 50
-	case LevelFatal:
-		rank = 60
-	}
-
-	return
+func ParseLevel(level string) core.Level {
+	return core.ParseLevel(level)
 }
