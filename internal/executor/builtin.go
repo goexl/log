@@ -1,6 +1,7 @@
 package executor
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 
@@ -48,7 +49,23 @@ func (b *Builtin) Sync() (err error) {
 	return
 }
 
-func (b *Builtin) parse(level core.Level, msg string, fields ...gox.Field[any]) (args []any) {
+func (b *Builtin) parse(level core.Level, msg string, fields ...gox.Field[any]) (args any) {
+	data := make(map[string]any, len(fields)+2)
+	data["level"] = level
+	data["message"] = msg
+	for _, _field := range fields {
+		data[_field.Key()] = _field.Value()
+	}
+	if bytes, me := json.Marshal(data); nil != me {
+		args = b.string(level, msg, fields...)
+	} else {
+		args = gox.StringBuilder(`{"level":`, level, `,"message":"`, msg, `",`, string(bytes[1:])).String()
+	}
+
+	return
+}
+
+func (b *Builtin) string(level core.Level, msg string, fields ...gox.Field[any]) (args []any) {
 	args = make([]any, 0, len(fields)+1)
 	args = append(args, level)
 	args = append(args, msg)
