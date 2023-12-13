@@ -51,8 +51,6 @@ func (b *Builtin) Sync() (err error) {
 
 func (b *Builtin) parse(level core.Level, msg string, fields ...gox.Field[any]) (args any) {
 	data := make(map[string]any, len(fields)+2)
-	data["level"] = level
-	data["message"] = msg
 	for _, _field := range fields {
 		data[_field.Key()] = _field.Value()
 	}
