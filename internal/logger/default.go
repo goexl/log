@@ -31,8 +31,8 @@ func (d *Default) Level() core.Level {
 	return d.params.Level
 }
 
-func (d *Default) Enable(lvl core.Level) {
-	d.params.Level = lvl
+func (d *Default) Enable(level core.Level) {
+	d.params.Level = level
 }
 
 func (d *Default) Enabled(lvl core.Level) bool {
