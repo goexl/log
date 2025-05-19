@@ -5,17 +5,17 @@ import (
 )
 
 type Executor interface {
-	Debug(msg string, fields ...gox.Field[any])
+	Debug(msg string, required gox.Field[any], optionals ...gox.Field[any])
 
-	Info(msg string, fields ...gox.Field[any])
+	Info(msg string, required gox.Field[any], optionals ...gox.Field[any])
 
-	Warn(msg string, fields ...gox.Field[any])
+	Warn(msg string, required gox.Field[any], optionals ...gox.Field[any])
 
-	Error(msg string, fields ...gox.Field[any])
+	Error(msg string, required gox.Field[any], optionals ...gox.Field[any])
 
-	Panic(msg string, fields ...gox.Field[any])
+	Panic(msg string, required gox.Field[any], optionals ...gox.Field[any])
 
-	Fatal(msg string, fields ...gox.Field[any])
+	Fatal(msg string, required gox.Field[any], optionals ...gox.Field[any])
 
 	Sync() error
 }

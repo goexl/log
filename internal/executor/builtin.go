@@ -21,41 +21,42 @@ func NewBuiltin() *Builtin {
 	}
 }
 
-func (b *Builtin) Debug(msg string, fields ...gox.Field[any]) {
-	b.logger.Println(b.parse(core.LevelDebug, msg, fields...))
+func (b *Builtin) Debug(msg string, required gox.Field[any], optionals ...gox.Field[any]) {
+	b.logger.Println(b.parse(core.LevelDebug, msg, required, optionals...))
 }
 
-func (b *Builtin) Info(msg string, fields ...gox.Field[any]) {
-	b.logger.Println(b.parse(core.LevelInfo, msg, fields...))
+func (b *Builtin) Info(msg string, required gox.Field[any], optionals ...gox.Field[any]) {
+	b.logger.Println(b.parse(core.LevelInfo, msg, required, optionals...))
 }
 
-func (b *Builtin) Warn(msg string, fields ...gox.Field[any]) {
-	b.logger.Println(b.parse(core.LevelWarn, msg, fields...))
+func (b *Builtin) Warn(msg string, required gox.Field[any], optionals ...gox.Field[any]) {
+	b.logger.Println(b.parse(core.LevelWarn, msg, required, optionals...))
 }
 
-func (b *Builtin) Error(msg string, fields ...gox.Field[any]) {
-	b.logger.Println(b.parse(core.LevelError, msg, fields...))
+func (b *Builtin) Error(msg string, required gox.Field[any], optionals ...gox.Field[any]) {
+	b.logger.Println(b.parse(core.LevelError, msg, required, optionals...))
 }
 
-func (b *Builtin) Panic(msg string, fields ...gox.Field[any]) {
-	b.logger.Println(b.parse(core.LevelPanic, msg, fields...))
+func (b *Builtin) Panic(msg string, required gox.Field[any], optionals ...gox.Field[any]) {
+	b.logger.Println(b.parse(core.LevelPanic, msg, required, optionals...))
 }
 
-func (b *Builtin) Fatal(msg string, fields ...gox.Field[any]) {
-	b.logger.Println(b.parse(core.LevelFatal, msg, fields...))
+func (b *Builtin) Fatal(msg string, required gox.Field[any], optionals ...gox.Field[any]) {
+	b.logger.Println(b.parse(core.LevelFatal, msg, required, optionals...))
 }
 
 func (b *Builtin) Sync() (err error) {
 	return
 }
 
-func (b *Builtin) parse(level core.Level, msg string, fields ...gox.Field[any]) (args any) {
-	data := make(map[string]any, len(fields)+2)
-	for _, _field := range fields {
-		data[_field.Key()] = _field.Value()
+func (b *Builtin) parse(level core.Level, msg string, required gox.Field[any], optionals ...gox.Field[any]) (args any) { // nolint:lll
+	data := make(map[string]any, len(optionals)+3)
+	data[required.Key()] = required.Value()
+	for _, field := range optionals {
+		data[field.Key()] = field.Value()
 	}
 	if bytes, me := json.Marshal(data); nil != me {
-		args = b.string(level, msg, fields...)
+		args = b.string(level, msg, required, optionals...)
 	} else {
 		args = gox.StringBuilder(`{"level":`, level, `,"message":"`, msg, `",`, string(bytes[1:])).String()
 	}
@@ -63,10 +64,12 @@ func (b *Builtin) parse(level core.Level, msg string, fields ...gox.Field[any]) 
 	return
 }
 
-func (b *Builtin) string(level core.Level, msg string, fields ...gox.Field[any]) (args []any) {
-	args = make([]any, 0, len(fields)+1)
+func (b *Builtin) string(level core.Level, msg string, required gox.Field[any], optionals ...gox.Field[any]) (args []any) { // nolint:lll
+	args = make([]any, 0, len(optionals)+2)
 	args = append(args, level)
 	args = append(args, msg)
+
+	fields := append([]gox.Field[any]{required}, optionals...)
 	if 0 != len(fields) {
 		args = append(args, "[")
 		for _, field := range fields {
