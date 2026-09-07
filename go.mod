@@ -1,9 +1,9 @@
 module github.com/goexl/log
 
-go 1.24
+go 1.27
 
 require (
-	github.com/goexl/gox v1.9.2
+	github.com/goexl/gox v1.9.3
 	github.com/stretchr/testify v1.12.1
 )
 
